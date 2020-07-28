@@ -7,9 +7,9 @@ using System;
 
 namespace SampleProject.Infrastructure.Data.Context
 {
-    public class Context : DbContext
+    public class BaseContext : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options) { }
+        public BaseContext(DbContextOptions<BaseContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

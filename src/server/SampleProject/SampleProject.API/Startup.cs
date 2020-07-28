@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SampleProject.API.Configurations;
 
 namespace SampleProject.API
 {
@@ -25,6 +26,12 @@ namespace SampleProject.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCors();
+
+            services.AddDataBaseSetup(Configuration);
+
+            services.AddDependencyInjectionSetup();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +41,14 @@ namespace SampleProject.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x =>
+            {
+                x.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+            });
+
 
             app.UseRouting();
 
