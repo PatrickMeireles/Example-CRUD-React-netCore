@@ -3,9 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleProject.Infrastructure.Data.Context;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SampleProject.API.Configurations
 {
@@ -16,7 +13,7 @@ namespace SampleProject.API.Configurations
             if (services == null)
                 throw new ArgumentException(nameof(services));
 
-            services.AddDbContext<Context>(option =>
+            services.AddDbContext<BaseContext>(option =>
                 option.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }

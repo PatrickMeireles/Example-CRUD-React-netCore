@@ -10,8 +10,11 @@ namespace SampleProject.Infrastructure.Data.EntityConfig
         {
             builder.ToTable("Cidades");
 
-            builder.Property(c => c.Descricao)
+            builder.Property(c => c.Nome)
                    .HasColumnType("varchar(150)")
+                   .IsRequired();
+
+            builder.Property(c => c.Codigo)
                    .IsRequired();
 
             builder.Property(c => c.UF)

@@ -11,7 +11,7 @@ namespace Entities
 
         public DateTime DataAtivacao { get; set; }
 
-        public DateTime DataInativacao { get; set; }
+        public DateTime? DataInativacao { get; set; }
 
         public int IdPessoa { get; set; }
 

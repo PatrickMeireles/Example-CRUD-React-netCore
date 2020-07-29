@@ -11,9 +11,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="microsoft.extensions.dependencyinjection" Version="3.1.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SampleProject.Infrastructure.CrossCutting.IoC\SampleProject.Infrastructure.CrossCutting.IoC.csproj" />
     <ProjectReference Include="..\SampleProject.Infrastructure.Data\SampleProject.Infrastructure.Data.csproj" />
   </ItemGroup>
 

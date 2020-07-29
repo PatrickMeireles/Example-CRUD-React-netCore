@@ -4,4 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="microsoft.extensions.dependencyinjection" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SampleProject.Application\SampleProject.Application.csproj" />
+    <ProjectReference Include="..\SampleProject.Infrastructure.Data\SampleProject.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
 </Project>

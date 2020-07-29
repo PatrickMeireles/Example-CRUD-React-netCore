@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SampleProject.Application.Interfaces;
+using SampleProject.Application.Services;
 using SampleProject.Domain.Interfaces;
 using SampleProject.Infrastructure.Data.Context;
 using SampleProject.Infrastructure.Data.Repository;
@@ -10,9 +12,14 @@ namespace SampleProject.Infrastructure.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+            //APPLICATION
+            services.AddScoped<IRegistrarAppServices, RegistrarAppServices>();
+            services.AddScoped<ICidadeAppServices, CidadeAppServices>();            
 
             //INFRA
             services.AddScoped<IPessoa, PessoaRepository>();
+            services.AddScoped<ICidade, CidadeRepository>();
+            services.AddScoped<IUsuario, UsuarioRepository>();
 
             services.AddScoped<BaseContext>();
         }

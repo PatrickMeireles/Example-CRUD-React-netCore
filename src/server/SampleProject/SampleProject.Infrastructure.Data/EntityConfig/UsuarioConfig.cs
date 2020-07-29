@@ -23,7 +23,7 @@ namespace SampleProject.Infrastructure.Data.EntityConfig
 
             builder.Property(x => x.DataAtivacao)
                    .IsRequired();
-
+            
             builder.HasOne(x => x.Pessoa)
                    .WithOne()
                    .HasForeignKey<Usuario>(x => x.IdPessoa)

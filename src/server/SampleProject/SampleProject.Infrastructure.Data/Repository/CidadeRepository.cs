@@ -21,12 +21,15 @@ namespace SampleProject.Infrastructure.Data.Repository
                              .AsNoTracking();
 
             if (!String.IsNullOrEmpty(descricao) && !String.IsNullOrWhiteSpace(descricao))
-                cidades = cidades.Where(x => x.Descricao.ToLower().Contains(descricao.ToLower()));
+                cidades = cidades.Where(x => x.Nome.ToLower().Contains(descricao.ToLower()));
 
             if (take.HasValue)
                 cidades = cidades.Take(take.Value);
+            else
+                cidades = cidades.Take(10);
 
-            return cidades;
+            return cidades
+                   .OrderBy(c => c.Nome);
         }
     }
 }
