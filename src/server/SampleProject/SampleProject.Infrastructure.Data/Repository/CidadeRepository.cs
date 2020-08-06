@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SampleProject.Infrastructure.Data.Repository
 {
@@ -15,7 +16,24 @@ namespace SampleProject.Infrastructure.Data.Repository
 
         public CidadeRepository(BaseContext context) => _db = context;
 
-        public IEnumerable<Cidade> GetAll(string descricao, int? take)
+        //public IEnumerable<Cidade> GetAll(string descricao, int? take)
+        //{
+        //    var cidades = _db.Set<Cidade>()
+        //                     .AsNoTracking();
+
+        //    if (!String.IsNullOrEmpty(descricao) && !String.IsNullOrWhiteSpace(descricao))
+        //        cidades = cidades.Where(x => x.Nome.ToLower().Contains(descricao.ToLower()));
+
+        //    if (take.HasValue)
+        //        cidades = cidades.Take(take.Value);
+        //    else
+        //        cidades = cidades.Take(10);
+
+        //    return cidades
+        //           .OrderBy(c => c.Nome);
+        //}
+
+        public async Task<IEnumerable<Cidade>> GetAll(string descricao, int? take)
         {
             var cidades = _db.Set<Cidade>()
                              .AsNoTracking();
@@ -28,8 +46,9 @@ namespace SampleProject.Infrastructure.Data.Repository
             else
                 cidades = cidades.Take(10);
 
-            return cidades
-                   .OrderBy(c => c.Nome);
+            return await cidades
+                   .OrderBy(c => c.Nome)
+                   .ToListAsync();
         }
     }
 }

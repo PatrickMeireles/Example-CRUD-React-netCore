@@ -16,19 +16,7 @@ import Container from '@material-ui/core/Container';
 
 import { Link as LinkDom } from 'react-router-dom';
 import Registrar from '../Registrar';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../Copyright';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,7 +49,7 @@ export default function Login() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Acessar
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -70,7 +58,7 @@ export default function Login() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Usuário"
             name="email"
             autoComplete="email"
             autoFocus
@@ -81,7 +69,7 @@ export default function Login() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Senha"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -97,7 +85,7 @@ export default function Login() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Acessar
           </Button>
           <Grid container>
             <Grid item xs>

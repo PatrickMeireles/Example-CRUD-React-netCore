@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SampleProject.Application.Interfaces;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SampleProject.API.Controllers
 {
@@ -15,9 +13,9 @@ namespace SampleProject.API.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public IActionResult GetAll(string descricao)
+        public async Task<IActionResult> GetAll(string q)
         {
-            var cidades = _cidadeServices.GetAll(descricao, 10);
+            var cidades = await _cidadeServices.GetAll(q, 10);
 
             return Ok(cidades);
         }

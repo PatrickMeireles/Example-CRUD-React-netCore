@@ -2,6 +2,7 @@
 using SampleProject.Application.Interfaces;
 using SampleProject.Domain.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SampleProject.Application.Services
 {
@@ -11,6 +12,6 @@ namespace SampleProject.Application.Services
 
         public CidadeAppServices(ICidade cidadeRepository) => _cidadeRepository = cidadeRepository;
 
-        public IEnumerable<Cidade> GetAll(string descricao, int? take) =>  _cidadeRepository.GetAll(descricao, take);
+        Task<IEnumerable<Cidade>> ICidadeAppServices.GetAll(string descricao, int? take) => _cidadeRepository.GetAll(descricao, take);
     }
 }

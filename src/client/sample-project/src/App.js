@@ -1,10 +1,10 @@
 import React from 'react';
 import Login from './components/Login'
 
-function App() {
+
+export default function App() {
   return (
-    <Login />
+      <Login />
   );
 }
 
-export default App;
