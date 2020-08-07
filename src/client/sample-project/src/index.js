@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { createBrowserHistory } from 'history';
 import { BrowserRouter as Router, Route, Switch, Redirect, matchPath } from 'react-router-dom';
 import Login from './components/Login';

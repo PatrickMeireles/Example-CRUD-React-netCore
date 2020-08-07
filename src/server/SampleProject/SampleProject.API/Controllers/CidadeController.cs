@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SampleProject.Application.Interfaces;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace SampleProject.API.Controllers
 {

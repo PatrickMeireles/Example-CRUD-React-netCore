@@ -10,7 +10,7 @@ export const cidadeReducer = (state = initialState, action) => {
 
         case ACTION_TYPES.GETALL:
             return {
-                ...state, 
+                ...state,
                 list: [...action.payload]
             }
             break;

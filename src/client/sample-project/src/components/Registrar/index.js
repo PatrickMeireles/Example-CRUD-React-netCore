@@ -15,14 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as LinkDom } from 'react-router-dom';
 import Copyright from '../Copyright';
-
 import Autocomplete from '@material-ui/lab/Autocomplete'
-
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,32 +44,20 @@ export function Register({...props}) {
   const [cidades, setCidades] = useState([]);
   const loading = open && cidades.length === 0;
 
+  useEffect(() => {
+    props.cidades();
+  },[]);
+
     useEffect(() => {
       let active = true;
 
       if(!loading){
         return undefined;
-      }
-      
-      
-
-      (async() => {
-
-       
-
-        const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-        //await sleep(1e3);
-        const countries = await response.json();
-
-        console.log(countries)
-        await props.cidades();
-
-        console.log(props.cidade);
-
+      }           
+        props.cidades();
         if(active){
-          setCidades(Object.keys(countries).map((key) => countries[key].item[0]));          
+          setCidades(formatReturnCidades(props.cidade));          
         }
-      })();
 
       return () => {
         active = false;
@@ -88,6 +69,20 @@ export function Register({...props}) {
         setCidades([]);
       }
     }, [open]);
+
+    const onChangeSelect = e => {
+      
+      props.cidades(e.target.value);        
+
+        setCidades(formatReturnCidades(props.cidade));
+    }
+
+  const formatReturnCidades = cidades => {
+    return cidades.map(c => ({
+      code: c.id,
+      label: c.nome + ' - ' + c.uf
+    }));
+  }
 
 
   return (
@@ -127,8 +122,7 @@ export function Register({...props}) {
             </Grid>
             <Grid item xs={12}>
               <Autocomplete
-                id="asynchronous-demo"
-                style={{ width: 300 }}
+                id="IdCidade"
                 open={open}
                 onOpen={() => {
                   setOpen(true);
@@ -136,14 +130,15 @@ export function Register({...props}) {
                 onClose={() => {
                   setOpen(false);
                 }}
-                getOptionSelected={(option, value) => option.name === value.name}
-                getOptionLabel={(option) => option.name}
+                getOptionSelected={(option, value) => option.value === value.value}
+                getOptionLabel={(option) => option.label}
                 options={cidades}
                 loading={loading}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Asynchronous"
+                    onChange={onChangeSelect}
+                    label="Cidade"
                     variant="outlined"
                     InputProps={{
                       ...params.InputProps,
@@ -164,10 +159,22 @@ export function Register({...props}) {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
-                label="Password"
+                name="Senha"
+                label="Senha"
                 type="password"
-                id="password"
+                id="senha"
+                autoComplete="current-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="ConfirmaSenha"
+                label="Confirma Senha"
+                type="password"
+                id="ConfirmaSenha"
                 autoComplete="current-password"
               />
             </Grid>
@@ -185,12 +192,12 @@ export function Register({...props}) {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Registrar
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <LinkDom to='/' variant="body2">
-                Already have an account? Sign in
+                Já possui uma conta?
               </LinkDom>
             </Grid>
           </Grid>
@@ -202,7 +209,6 @@ export function Register({...props}) {
     </Container>
   );
 }
-
 
 const mapStateToProps = state => ({cidade: state.cidadeReducer.list });
 
