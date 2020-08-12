@@ -16,6 +16,8 @@ import Container from '@material-ui/core/Container';
 import { Link as LinkDom } from 'react-router-dom';
 import Copyright from '../Copyright';
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import useForm from '../Form/useForm.js';
+import { validateEmail } from '../Util/validation';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,7 +39,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Register({...props}) {
+const initialFields = {
+  Nome: '',
+  Email: '',
+  IdCidade: '',
+  Senha: '',
+  ConfirmarSenha: ''
+};
+
+export function Register({ ...props }) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -46,44 +56,121 @@ export function Register({...props}) {
 
   useEffect(() => {
     props.cidades();
-  },[]);
+  }, []);
 
-    useEffect(() => {
-      let active = true;
+  useEffect(() => {
+    let active = true;
 
-      if(!loading){
-        return undefined;
-      }           
-        props.cidades();
-        if(active){
-          setCidades(formatReturnCidades(props.cidade));          
-        }
-
-      return () => {
-        active = false;
-      }
-    }, [loading]);
-
-    useEffect(() => {
-      if(!open){
-        setCidades([]);
-      }
-    }, [open]);
-
-    const onChangeSelect = e => {
-      
-      props.cidades(e.target.value);        
-
-        setCidades(formatReturnCidades(props.cidade));
+    if (!loading) {
+      return undefined;
     }
+    props.cidades();
+    if (active) {
+      setCidades(formatReturnCidades(props.cidade));
+    }
+
+    return () => {
+      active = false;
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!open) {
+      setCidades([]);
+    }
+  }, [open]);
+
+  const onChangeSelect = e => {
+    props.cidades(e.target.value);
+    setCidades(formatReturnCidades(props.cidade));
+  }
 
   const formatReturnCidades = cidades => {
     return cidades.map(c => ({
-      code: c.id,
-      label: c.nome + ' - ' + c.uf
+      id: c.id,
+      text: c.nome + ' - ' + c.uf
     }));
   }
 
+
+
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+
+    const campoObrigatorio = 'Este campo é obrigatório';
+
+    if ('Nome' in fieldValues)
+      temp.Nome = fieldValues.Nome ? '' : campoObrigatorio;
+
+    if ('Email' in fieldValues) {
+
+      if (fieldValues.Email === '')
+        temp.Email = campoObrigatorio;
+      else if (!validateEmail(fieldValues.Email))
+        temp.Email = "Email informado não é válido";
+      else
+        temp.Email = '';
+    }
+
+    if ('Senha' in fieldValues || 'ConfirmarSenha' in fieldValues) {
+
+      var senhaF = fieldValues.Senha;
+      var confirmarSenhaF = fieldValues.ConfirmarSenha;
+
+      temp.Senha = '';
+
+      if ('Senha' in fieldValues) {
+
+        if (!senhaF)
+          temp.Senha = campoObrigatorio;
+
+        if (senhaF !== '' && (senhaF.length < 6 || senhaF.length > 20))
+          temp.Senha = 'A senha deve conter entre 6 a 20 caracteres';
+      }
+
+      temp.ConfirmarSenha = '';
+
+      if ('ConfirmarSenha' in fieldValues) {
+        if (!confirmarSenhaF)
+          temp.ConfirmarSenha = campoObrigatorio;
+
+        if ((values.Senha && confirmarSenhaF && (values.Senha != confirmarSenhaF)))
+          temp.ConfirmarSenha = 'As senhas não conferem'
+      }
+    }
+
+    if ('IdCidade' in fieldValues)
+      temp.IdCidade = fieldValues.IdCidade ? '' : campoObrigatorio;
+
+    setErrors({ ...temp });
+
+    if (fieldValues == values) {
+      var retorno = Object.values(temp).every(x => x == "");
+      return retorno;
+    }
+  };
+
+  const {
+    values,
+    setValues,
+    handleInputChange,
+    handleInputChangeSelect,
+    resetForm,
+    errors,
+    setErrors } = useForm(initialFields, validate);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    var returnValidate = validate();
+
+    console.log(returnValidate);
+
+    // if(validate){
+
+    // }
+
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -95,18 +182,19 @@ export function Register({...props}) {
         <Typography component="h1" variant="h5">
           Registrar
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="nome"
+                name="Nome"
                 variant="outlined"
                 required
                 fullWidth
-                id="nome"
+                id="Nome"
                 label="Nome"
                 autoFocus
+                onChange={handleInputChange}
+                {...(errors.Nome && { error: true, helperText: errors.Nome })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,15 +202,17 @@ export function Register({...props}) {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                id="Email"
                 label="Email"
-                name="email"
-                autoComplete="email"
+                name="Email"
+                onChange={handleInputChange}
+                {...(errors.Email && { error: true, helperText: errors.Email })}
               />
             </Grid>
             <Grid item xs={12}>
               <Autocomplete
                 id="IdCidade"
+                name="IdCidade"
                 open={open}
                 onOpen={() => {
                   setOpen(true);
@@ -131,15 +221,18 @@ export function Register({...props}) {
                   setOpen(false);
                 }}
                 getOptionSelected={(option, value) => option.value === value.value}
-                getOptionLabel={(option) => option.label}
+                getOptionLabel={(option) => option.text}
                 options={cidades}
                 loading={loading}
+                onChange={(option, value) => handleInputChangeSelect(value?.id, 'IdCidade')}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     onChange={onChangeSelect}
                     label="Cidade"
+                    required
                     variant="outlined"
+                    {...(errors.IdCidade && { error: true, helperText: errors.IdCidade })}
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
@@ -162,8 +255,9 @@ export function Register({...props}) {
                 name="Senha"
                 label="Senha"
                 type="password"
-                id="senha"
-                autoComplete="current-password"
+                id="Senha"
+                onChange={handleInputChange}
+                {...(errors.Senha && { error: true, helperText: errors.Senha })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -171,17 +265,12 @@ export function Register({...props}) {
                 variant="outlined"
                 required
                 fullWidth
-                name="ConfirmaSenha"
+                name="ConfirmarSenha"
                 label="Confirma Senha"
                 type="password"
-                id="ConfirmaSenha"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                id="ConfirmarSenha"
+                onChange={handleInputChange}
+                {...(errors.ConfirmarSenha && { error: true, helperText: errors.ConfirmarSenha })}
               />
             </Grid>
           </Grid>
@@ -210,10 +299,10 @@ export function Register({...props}) {
   );
 }
 
-const mapStateToProps = state => ({cidade: state.cidadeReducer.list });
+const mapStateToProps = state => ({ cidade: state.cidadeReducer.list });
 
 const mapActionToProps = {
-    cidades: CidadeActions.getAll
+  cidades: CidadeActions.getAll
 }
 
 export default connect(mapStateToProps, mapActionToProps)(Register);

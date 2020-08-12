@@ -74,10 +74,10 @@ export default function Login() {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -89,13 +89,13 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              {/* <Link href="#" variant="body2">
                 Forgot password?
-              </Link>
+              </Link> */}
             </Grid>
             <Grid item>
               <LinkDom to='/registrar' variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Novo por aqui? Crie uma conta"}
               </LinkDom>
             </Grid>
           </Grid>
