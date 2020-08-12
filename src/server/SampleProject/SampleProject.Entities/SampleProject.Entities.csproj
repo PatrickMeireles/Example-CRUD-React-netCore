@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>SampleProject.Entities</AssemblyName>
+    <RootNamespace>SampleProject.Entities</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SampleProject.Entities\SampleProject.Entities.csproj" />
-  </ItemGroup>
 
 </Project>

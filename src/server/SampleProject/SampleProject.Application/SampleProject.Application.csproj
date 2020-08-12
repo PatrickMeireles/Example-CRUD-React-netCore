@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SampleProject.Domain\SampleProject.Domain.csproj" />
-    <ProjectReference Include="..\SampleProject.Entities\Entities.csproj" />
+    <ProjectReference Include="..\SampleProject.Entities\SampleProject.Entities.csproj" />
+    <ProjectReference Include="..\SampleProject.Util\SampleProject.Util.csproj" />
   </ItemGroup>
 
 </Project>

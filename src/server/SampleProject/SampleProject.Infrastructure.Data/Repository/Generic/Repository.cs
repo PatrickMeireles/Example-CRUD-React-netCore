@@ -4,6 +4,7 @@ using SampleProject.Infrastructure.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SampleProject.Infrastructure.Data.Repository.Generic
 {
@@ -18,16 +19,26 @@ namespace SampleProject.Infrastructure.Data.Repository.Generic
             _dbSet = _db.Set<TEntity>();
         }
 
-        public virtual TEntity Add(TEntity entity)
+        public virtual async Task<TEntity> Add(TEntity entity)
         {
-            _dbSet.Add(entity);
+           await _dbSet.AddAsync(entity);
+           await _db.SaveChangesAsync();
+
             return entity;
         }
 
-        public void Delete(int id)
+        public async Task<Boolean> Delete(int id)
         {
-            var obj = _dbSet.Find(id);
-            _dbSet.Remove(obj);
+            try
+            {
+                var obj = await _dbSet.FindAsync(id);
+                _dbSet.Remove(obj);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void Dispose()
@@ -36,18 +47,16 @@ namespace SampleProject.Infrastructure.Data.Repository.Generic
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _dbSet;
-        }
+        public async Task<IEnumerable<TEntity>> GetAll() => await _dbSet.ToListAsync();
 
-        public TEntity GetById(int id) => _dbSet.Find(id);
+        public async Task<TEntity> GetById(int id) => await _dbSet.FindAsync(id);
 
-        public int SaveChanges() => _db.SaveChanges();
+        public async Task<int> SaveChanges() => await _db.SaveChangesAsync();
 
-        public TEntity Update(TEntity entity)
+        public virtual async Task<TEntity> Update(TEntity entity)
         {
             _dbSet.Update(entity);
+            await _db.SaveChangesAsync();
             return entity;
         }
     }
