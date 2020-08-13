@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as CidadeActions from '../../actions/cidadeActions';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,6 +17,9 @@ import Copyright from '../Copyright';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useForm from '../Form/useForm.js';
 import { validateEmail } from '../Util/validation';
+
+import * as CidadeActions from '../../actions/cidadeActions';
+import * as RegistrarActions from '../../actions/registrarActions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -164,12 +166,20 @@ export function Register({ ...props }) {
 
     var returnValidate = validate();
 
-    console.log(returnValidate);
+     if(returnValidate){
 
-    // if(validate){
+      const onSuccess = () => {
+        console.log('bombou');
+      }
 
-    // }
+      const onError = (error) => {
+        console.log(error);
+      }
 
+
+      props.registrar(values, onSuccess, onError);
+
+     }
   }
 
   return (
@@ -302,7 +312,8 @@ export function Register({ ...props }) {
 const mapStateToProps = state => ({ cidade: state.cidadeReducer.list });
 
 const mapActionToProps = {
-  cidades: CidadeActions.getAll
+  cidades: CidadeActions.getAll,
+  registrar: RegistrarActions.Create
 }
 
 export default connect(mapStateToProps, mapActionToProps)(Register);

@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using SampleProject.Application.ViewModel;
 using SampleProject.Domain.Interfaces;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SampleProject.Application.Validation
 {
@@ -19,7 +21,16 @@ namespace SampleProject.Application.Validation
                 .Must(x => 1 == 1).WithMessage("Message Here");
 
             RuleFor(x => x.Email)
-                .Must(x =>  _pessoa.GetAll().Result.Any(z => z.Email == x)).WithMessage("Já possui uma pessoa cadastrada com esse email.");                        
+                .Must(x => !ValidaUnicidade(x)).WithMessage("Já possui uma pessoa cadastrada com esse email.");                        
+        }
+
+        private Boolean ValidaUnicidade(string email)
+        {
+            var result = _pessoa.GetAll()
+                                .GetAwaiter()
+                                .GetResult();
+
+            return result.Where(x => x.Email == email).Any();
         }
     }
 }
