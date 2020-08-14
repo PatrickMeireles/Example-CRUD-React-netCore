@@ -12,5 +12,5 @@ export const getAll = (descricao = '') => dispatch => {
                 payload: response.data
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {console.log(err)})
 }

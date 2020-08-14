@@ -18,10 +18,13 @@ namespace SampleProject.Infrastructure.Data.EntityConfig
                     .HasColumnType("varchar(180)")
                     .IsRequired();
 
+
             builder.HasOne(x => x.Cidade)
                     .WithOne()
                     .HasForeignKey<Pessoa>(x => x.IdCidade)
-                    .HasPrincipalKey<Cidade>(x => x.Id);               
+                    .HasPrincipalKey<Cidade>(x => x.Id);
+
+            builder.HasIndex(e => e.IdCidade).IsUnique(false);
         }
     }
 }

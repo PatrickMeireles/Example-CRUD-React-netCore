@@ -20,6 +20,8 @@ import { validateEmail } from '../Util/validation';
 
 import * as CidadeActions from '../../actions/cidadeActions';
 import * as RegistrarActions from '../../actions/registrarActions';
+import swal from 'sweetalert';
+import  { Redirect , useHistory} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,6 +52,10 @@ const initialFields = {
 };
 
 export function Register({ ...props }) {
+
+
+  let history = useHistory()
+
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -169,11 +175,25 @@ export function Register({ ...props }) {
      if(returnValidate){
 
       const onSuccess = () => {
-        console.log('bombou');
+
+        history.push('/');
+
+        swal({
+          title: "Boas Notícias!",
+          text: 'Cadastro registrado com sucesso',
+          icon: "success",
+        })
       }
 
-      const onError = (error) => {
-        console.log(error);
+      const onError = (response) => {
+        if(response.erros){
+            var mensagem = response.erros[0].error;
+            swal({
+              title: "Ocorreu um erro!",
+              text: mensagem,
+              icon: "error",
+            })
+        }
       }
 
 

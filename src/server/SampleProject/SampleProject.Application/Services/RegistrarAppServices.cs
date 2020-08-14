@@ -29,7 +29,7 @@ namespace SampleProject.Application.Services
             await _pessoa.Add(pessoa);
 
             var usuario = new Usuario();
-            usuario.Login = model.Nome;
+            usuario.Login = model.Email;
             usuario.Senha = HashMD5.getMD5(model.Senha);
             usuario.DataAtivacao = DateTime.Now;
             usuario.Pessoa = pessoa;
