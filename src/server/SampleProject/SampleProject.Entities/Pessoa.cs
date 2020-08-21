@@ -14,5 +14,7 @@ namespace Entities
         public int IdCidade { get; set; }
 
         public Cidade Cidade { get; set; }
+
+        public Usuario Usuario { get; set; }
     }
 }

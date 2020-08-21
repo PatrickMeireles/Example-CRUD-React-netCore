@@ -1,12 +1,11 @@
 ﻿using Entities;
 using SampleProject.Domain.Interfaces.Generic;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SampleProject.Domain.Interfaces
 {
     public interface IUsuario : IGeneric<Usuario>
     {
+        Task<Usuario> Authenticate(string login, string senha);
     }
 }

@@ -14,7 +14,8 @@ namespace SampleProject.Infrastructure.CrossCutting.IoC
         {
             //APPLICATION
             services.AddScoped<IRegistrarAppServices, RegistrarAppServices>();
-            services.AddScoped<ICidadeAppServices, CidadeAppServices>();            
+            services.AddScoped<ICidadeAppServices, CidadeAppServices>();
+            services.AddScoped<ILoginAppServices, LoginAppServices>();
 
             //INFRA
             services.AddScoped<IPessoa, PessoaRepository>();

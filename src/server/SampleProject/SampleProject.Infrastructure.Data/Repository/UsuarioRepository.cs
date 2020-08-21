@@ -1,10 +1,11 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using SampleProject.Domain.Interfaces;
 using SampleProject.Infrastructure.Data.Context;
 using SampleProject.Infrastructure.Data.Repository.Generic;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SampleProject.Util;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SampleProject.Infrastructure.Data.Repository
 {
@@ -12,6 +13,16 @@ namespace SampleProject.Infrastructure.Data.Repository
     {
         public UsuarioRepository(BaseContext context) : base(context)
         {
+        }
+
+        public async Task<Usuario> Authenticate(string login, string senha)
+        {
+            var usuario = await _dbSet.Where(x => x.Login == login &&
+                                            x.Senha == HashMD5.getMD5(senha))
+                                .OrderByDescending(x => x.DataAtivacao)
+                                .Include(x => x.Pessoa)
+                                .FirstOrDefaultAsync();
+            return usuario;
         }
     }
 }
