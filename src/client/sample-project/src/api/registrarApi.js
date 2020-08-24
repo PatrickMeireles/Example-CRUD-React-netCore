@@ -1,10 +1,9 @@
-import axios from 'axios';
-import baseUrl from './api';
+import api from './api';
 
 export default {
-    Registrar(url = baseUrl + 'Registrar'){
+    Registrar(url = 'Registrar'){
         return{
-            Create: model => axios.post(url + '/Create', model)
+            Create: model => api.post(url + '/Create', model)
         }
     }
 }

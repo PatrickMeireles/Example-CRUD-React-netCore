@@ -1,3 +1,23 @@
+import axios from 'axios';
+import { getToken } from './auth';
+
 const baseUrl = 'http://localhost:63165/v1/';
 
-export default baseUrl;
+//export default baseUrl;
+
+
+const api = axios.create({
+    baseURL: baseUrl
+});
+
+
+api.interceptors.request.use(async config => {
+    const token = getToken();
+
+    if(token)
+        config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+});
+
+export default api;

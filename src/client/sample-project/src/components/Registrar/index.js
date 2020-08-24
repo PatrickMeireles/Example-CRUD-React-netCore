@@ -51,10 +51,10 @@ const initialFields = {
   ConfirmarSenha: ''
 };
 
-export function Register({ ...props }) {
+const Register = ({ ...props }) => {
 
 
-  let history = useHistory()
+  let history = useHistory();
 
   const classes = useStyles();
 
@@ -195,7 +195,6 @@ export function Register({ ...props }) {
             })
         }
       }
-
 
       props.registrar(values, onSuccess, onError);
 

@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, {useState, useEffect} from 'react';
+import { connect} from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import useForm from '../Form/useForm.js';
+import * as LoginAction from '../../actions/loginActions';
+import { login } from '../../api/auth';
 import { Link as LinkDom } from 'react-router-dom';
 import Registrar from '../Registrar';
 import Copyright from '../Copyright';
@@ -38,8 +41,72 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+const initialFields = {
+    Login: '',
+    Senha: ''
+}
+
+const Login = ({...props}) => {
   const classes = useStyles();
+
+  
+
+  const validate = (fieldValues = values) => {
+    let temp = {...errors};
+
+    const campoObrigatorio = 'Este campo é obrigatório';
+
+    if('Login' in fieldValues)
+        temp.Login = fieldValues.Login ? '' : campoObrigatorio;
+
+    if('Senha' in fieldValues)
+      temp.Senha = fieldValues.Senha ? '' : campoObrigatorio;
+
+      setErrors({...temp});
+
+      if(fieldValues == values)
+        return Object.values(temp).every(x => x == '');
+
+  }
+
+  const {
+    values,
+    setValues,
+    handleInputChange,
+    handleInputChangeSelect,
+    resetForm,
+    errors,
+    setErrors } = useForm(initialFields, validate);
+
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    var returnValidate = validate();
+
+    if(returnValidate){
+
+      const onSuccess = () => {
+
+
+
+      };
+
+      const onError = (response) => {
+        if(response.erros){
+          var mensagem = response.erros[0].error;
+          // swal({
+          //   title: "Ocorreu um erro!",
+          //   text: mensagem,
+          //   icon: "error",
+          // })
+      }
+      }
+
+      props.Registrar(values, onSuccess, onError);
+    }
+
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,17 +118,19 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Acessar
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="Login"
             label="Usuário"
-            name="email"
+            name="Login"
             autoComplete="email"
             autoFocus
+            onChange={handleInputChange}
+            {...(errors.Login && { error: true, helperText: errors.Login })}
           />
           <TextField
             variant="outlined"
@@ -71,13 +140,11 @@ export default function Login() {
             name="password"
             label="Senha"
             type="password"
-            id="password"
+            id="Senha"
             autoComplete="current-password"
+            onChange={handleInputChange}
+            {...(errors.Senha && { error: true, helperText: errors.Senha })}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
@@ -107,3 +174,11 @@ export default function Login() {
     </Container>
   );
 }
+
+const mapStateToProps = state => ({});
+
+const mapActionToProps = {
+  Authenticate: LoginAction.Authenticate
+}
+
+export default connect(mapStateToProps, mapActionToProps)(Login);

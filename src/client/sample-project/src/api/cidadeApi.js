@@ -1,10 +1,9 @@
-import axios from 'axios';
-import baseUrl from './api';
+import api from './api';
 
 export default {
-    Cidade(url = baseUrl + 'Cidade') {
+    Cidade(url = 'Cidade') {
         return {
-            getAll: descricao => axios.get(url + '/GetAll?q=' + descricao)
+            getAll: descricao => api.get(url + '/GetAll?q=' + descricao)
         }
     }
 }

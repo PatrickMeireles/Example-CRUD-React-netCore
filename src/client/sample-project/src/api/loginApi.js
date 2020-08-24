@@ -1,10 +1,10 @@
 import axios from 'axios';
-import baseUrl from './api';
+import api from './api';
 
 export default {
-    Login(url = baseUrl + 'Login'){
+    Login(url = 'Login'){
         return{
-            Authenticate: model => axios.post(url + '/Authenticate', model)
+            Authenticate: model => api.post(url + '/Authenticate', model)
         }
     }
 }

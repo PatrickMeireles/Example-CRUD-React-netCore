@@ -1,9 +1,9 @@
 import React from 'react';
 
 
-export default function Home() {
+const Home = () => (
     <> 
     </>
-}
+);
 
-
+export default Home;
