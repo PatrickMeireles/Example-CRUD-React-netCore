@@ -14,5 +14,5 @@ export const Authenticate = (data, onSuccess, onError) => dispatch => {
                 });
                 onSuccess();
             }).
-            catch(error => onError(error));
+            catch(error => onError(error.response.data));
 }

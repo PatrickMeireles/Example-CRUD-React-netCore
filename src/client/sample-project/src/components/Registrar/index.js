@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -265,11 +266,11 @@ const Register = ({ ...props }) => {
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
-                        // <React.Fragment>
-                        //   {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                        //   {params.InputProps.endAdornment}
-                        // </React.Fragment>
-                        <> {params.InputProps.endAdornment} </>
+                        <React.Fragment>
+                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                        
                       ),
                     }}
                   />

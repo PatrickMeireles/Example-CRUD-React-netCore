@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { connect} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import swal from 'sweetalert';
 import useForm from '../Form/useForm.js';
 import * as LoginAction from '../../actions/loginActions';
 import { login } from '../../api/auth';
@@ -42,30 +42,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialFields = {
-    Login: '',
-    Senha: ''
+  Login: '',
+  Senha: ''
 }
 
-const Login = ({...props}) => {
+const Login = ({ ...props }) => {
   const classes = useStyles();
 
-  
-
   const validate = (fieldValues = values) => {
-    let temp = {...errors};
+    let temp = { ...errors };
 
     const campoObrigatorio = 'Este campo é obrigatório';
 
-    if('Login' in fieldValues)
-        temp.Login = fieldValues.Login ? '' : campoObrigatorio;
+    if ('Login' in fieldValues)
+      temp.Login = fieldValues.Login ? '' : campoObrigatorio;
 
-    if('Senha' in fieldValues)
+    if ('Senha' in fieldValues)
       temp.Senha = fieldValues.Senha ? '' : campoObrigatorio;
 
-      setErrors({...temp});
+    setErrors({ ...temp });
 
-      if(fieldValues == values)
-        return Object.values(temp).every(x => x == '');
+    if (fieldValues == values)
+      return Object.values(temp).every(x => x == '');
 
   }
 
@@ -84,7 +82,7 @@ const Login = ({...props}) => {
 
     var returnValidate = validate();
 
-    if(returnValidate){
+    if (returnValidate) {
 
       const onSuccess = () => {
 
@@ -93,17 +91,17 @@ const Login = ({...props}) => {
       };
 
       const onError = (response) => {
-        if(response.erros){
+        if (response.erros) {
           var mensagem = response.erros[0].error;
-          // swal({
-          //   title: "Ocorreu um erro!",
-          //   text: mensagem,
-          //   icon: "error",
-          // })
-      }
+          swal({
+            title: "Ocorreu um erro!",
+            text: mensagem,
+            icon: "error",
+          })
+        }
       }
 
-      props.Registrar(values, onSuccess, onError);
+      props.Authenticate(values, onSuccess, onError);
     }
 
   }
@@ -137,7 +135,7 @@ const Login = ({...props}) => {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="Senha"
             label="Senha"
             type="password"
             id="Senha"

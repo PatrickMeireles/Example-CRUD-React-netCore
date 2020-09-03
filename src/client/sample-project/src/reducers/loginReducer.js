@@ -1,6 +1,6 @@
 import { ACTION_TYPES } from '../actions/loginActions';
 
-const initialState ={};
+const initialState = {};
 
 export const loginReducer = (state = initialState, action) => {
     
