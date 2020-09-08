@@ -22,7 +22,7 @@ import { validateEmail } from '../Util/validation';
 import * as CidadeActions from '../../actions/cidadeActions';
 import * as RegistrarActions from '../../actions/registrarActions';
 import swal from 'sweetalert';
-import  { Redirect , useHistory} from 'react-router-dom'
+import { history } from '../../helpers';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,9 +53,6 @@ const initialFields = {
 };
 
 const Register = ({ ...props }) => {
-
-
-  let history = useHistory();
 
   const classes = useStyles();
 
@@ -100,8 +97,6 @@ const Register = ({ ...props }) => {
       text: c.nome + ' - ' + c.uf
     }));
   }
-
-
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };

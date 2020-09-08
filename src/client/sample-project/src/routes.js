@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
+import { history } from './helpers';
 import { BrowserRouter as Router, Route, Switch, Redirect, matchPath } from 'react-router-dom';
 import Login from './components/Login';
 import Registrar from './components/Registrar';
 import Home from './components/Home';
 import { store } from './store';
 import { Provider } from 'react-redux';
-
 import { isAuthenticated } from './api/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -25,7 +23,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const Routes = () => (
     <Provider store={store} >
-        <Router history={createBrowserHistory} >
+        <Router history={history} >
             <Switch>
                 <Route exact path="/" component={Login} />
                 <Route path="/Registrar" component={Registrar} />
