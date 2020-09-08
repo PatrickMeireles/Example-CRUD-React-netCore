@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +6,6 @@ using SampleProject.API.Security;
 using SampleProject.Application.Interfaces;
 using SampleProject.Application.Validation;
 using SampleProject.Application.ViewModel;
-using SampleProject.Domain.Interfaces;
 
 namespace SampleProject.API.Controllers
 {
@@ -22,7 +20,6 @@ namespace SampleProject.API.Controllers
             _login = login;
             _configuration = configuration;
         }
-
 
         [HttpPost]
         [Route("Authenticate")]
