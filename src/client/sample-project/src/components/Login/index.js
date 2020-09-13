@@ -101,7 +101,9 @@ const Login = ({ ...props }) => {
         }
       }
 
-      props.Authenticate(values, onSuccess, onError);
+      
+
+      props.Authenticate(values);
     }
 
   }

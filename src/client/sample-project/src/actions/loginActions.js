@@ -1,18 +1,20 @@
 import loginApi from '../api/loginApi';
+import { Success, Error } from './swalActions';
+import { login } from '../api/auth';
+import { history } from '../helpers';
 
 export const ACTION_TYPES = {
     AUTHENTICATE: 'AUTHENTICATE'
 }
 
-export const Authenticate = (data, onSuccess, onError) => dispatch => {
+export const Authenticate = (data) => dispatch => {
     loginApi.Login()
             .Authenticate(data)
             .then(response => {
-                // dispatch({
-                //     type: ACTION_TYPES.AUTHENTICATE,
-                //     payload: response.data
-                // });
-                onSuccess(response.data);
+                login(response.data.token);
+                history.push('/home');
             }).
-            catch(error => onError(error.response.data));
+            catch(error => {
+                    dispatch(Error('Ocorreu um erro!', '', error.response.data));
+            });
 }
