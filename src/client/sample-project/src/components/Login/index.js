@@ -16,8 +16,7 @@ import Container from '@material-ui/core/Container';
 import swal from 'sweetalert';
 import useForm from '../Form/useForm.js';
 import * as LoginAction from '../../actions/loginActions';
-import { login } from '../../api/auth';
-import { Link as LinkDom } from 'react-router-dom';
+import { Link as LinkDom, withRouter } from 'react-router-dom';
 import Registrar from '../Registrar';
 import Copyright from '../Copyright';
 
@@ -83,29 +82,8 @@ const Login = ({ ...props }) => {
     var returnValidate = validate();
 
     if (returnValidate) {
-
-      const onSuccess = () => {
-
-
-
-      };
-
-      const onError = (response) => {
-        if (response.erros) {
-          var mensagem = response.erros[0].error;
-          swal({
-            title: "Ocorreu um erro!",
-            text: mensagem,
-            icon: "error",
-          })
-        }
-      }
-
-      
-
       props.Authenticate(values);
     }
-
   }
 
   return (
@@ -175,10 +153,12 @@ const Login = ({ ...props }) => {
   );
 }
 
+const showLogin = withRouter(Login);
+
 const mapStateToProps = state => ({});
 
 const mapActionToProps = {
   Authenticate: LoginAction.Authenticate
 }
 
-export default connect(mapStateToProps, mapActionToProps)(Login);
+export default connect(mapStateToProps, mapActionToProps)(showLogin);

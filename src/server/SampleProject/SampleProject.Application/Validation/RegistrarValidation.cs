@@ -18,10 +18,6 @@ namespace SampleProject.Application.Validation
             _pessoa = pessoa;
 
             RuleFor(x => x.Email)
-                .Must(x => 1 == 1)
-                .WithMessage("Message Here");
-
-            RuleFor(x => x.Email)
                 .Must(x => !ValidaUnicidade(x))
                 .WithMessage("Já possui uma pessoa cadastrada com esse email.");                        
         }

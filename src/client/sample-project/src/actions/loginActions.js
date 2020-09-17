@@ -8,13 +8,14 @@ export const ACTION_TYPES = {
 }
 
 export const Authenticate = (data) => dispatch => {
+    
     loginApi.Login()
-            .Authenticate(data)
-            .then(response => {
-                login(response.data.token);
-                history.push('/home');
-            }).
-            catch(error => {
-                    dispatch(Error('Ocorreu um erro!', '', error.response.data));
-            });
+        .Authenticate(data)
+        .then(response => {
+            login(response.data.token);
+            history.push('/home');
+        }).
+        catch(error => {
+            dispatch(Error('Ocorreu um erro!', '', error.response.data));
+        });
 }

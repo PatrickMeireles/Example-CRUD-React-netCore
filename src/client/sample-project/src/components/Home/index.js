@@ -9,4 +9,6 @@ const Home = () => (
     </>
 );
 
-export default withRouter(Home);
+const showHome = withRouter(Home);
+
+export default (showHome);

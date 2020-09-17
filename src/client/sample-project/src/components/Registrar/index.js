@@ -13,16 +13,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as LinkDom } from 'react-router-dom';
+import { Link as LinkDom, withRouter } from 'react-router-dom';
 import Copyright from '../Copyright';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useForm from '../Form/useForm.js';
-import { validateEmail } from '../Util/validation';
-
 import * as CidadeActions from '../../actions/cidadeActions';
 import * as RegistrarActions from '../../actions/registrarActions';
 import swal from 'sweetalert';
 import { history } from '../../helpers';
+import validaForm from './validate';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,7 +51,7 @@ const initialFields = {
   ConfirmarSenha: ''
 };
 
-const Register = ({ ...props }) => {
+const Registrar = ({ ...props }) => {
 
   const classes = useStyles();
 
@@ -101,57 +100,12 @@ const Register = ({ ...props }) => {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
 
-    const campoObrigatorio = 'Este campo é obrigatório';
-
-    if ('Nome' in fieldValues)
-      temp.Nome = fieldValues.Nome ? '' : campoObrigatorio;
-
-    if ('Email' in fieldValues) {
-
-      if (fieldValues.Email === '')
-        temp.Email = campoObrigatorio;
-      else if (!validateEmail(fieldValues.Email))
-        temp.Email = "Email informado não é válido";
-      else
-        temp.Email = '';
-    }
-
-    if ('Senha' in fieldValues || 'ConfirmarSenha' in fieldValues) {
-
-      var senhaF = fieldValues.Senha;
-      var confirmarSenhaF = fieldValues.ConfirmarSenha;
-
-      temp.Senha = '';
-
-      if ('Senha' in fieldValues) {
-
-        if (!senhaF)
-          temp.Senha = campoObrigatorio;
-
-        if (senhaF !== '' && (senhaF.length < 6 || senhaF.length > 20))
-          temp.Senha = 'A senha deve conter entre 6 a 20 caracteres';
-      }
-
-      temp.ConfirmarSenha = '';
-
-      if ('ConfirmarSenha' in fieldValues) {
-        if (!confirmarSenhaF)
-          temp.ConfirmarSenha = campoObrigatorio;
-
-        if ((values.Senha && confirmarSenhaF && (values.Senha != confirmarSenhaF)))
-          temp.ConfirmarSenha = 'As senhas não conferem'
-      }
-    }
-
-    if ('IdCidade' in fieldValues)
-      temp.IdCidade = fieldValues.IdCidade ? '' : campoObrigatorio;
+    temp = validaForm(fieldValues, values);
 
     setErrors({ ...temp });
 
-    if (fieldValues == values) {
-      var retorno = Object.values(temp).every(x => x == "");
-      return retorno;
-    }
+    if (fieldValues == values)
+      return Object.values(temp).every(x => x == "");
   };
 
   const {
@@ -192,7 +146,7 @@ const Register = ({ ...props }) => {
         }
       }
 
-      props.registrar(values, onSuccess, onError);
+      props.registrar(values);
 
      }
   }
@@ -324,6 +278,8 @@ const Register = ({ ...props }) => {
   );
 }
 
+const showRegistrar = withRouter(Registrar);
+
 const mapStateToProps = state => ({ cidade: state.cidadeReducer.list });
 
 const mapActionToProps = {
@@ -331,4 +287,4 @@ const mapActionToProps = {
   registrar: RegistrarActions.Create
 }
 
-export default connect(mapStateToProps, mapActionToProps)(Register);
+export default connect(mapStateToProps, mapActionToProps)(showRegistrar);

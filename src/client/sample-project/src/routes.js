@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { history } from './helpers';
 import { BrowserRouter as Router, Route, Switch, Redirect, matchPath } from 'react-router-dom';
 import Login from './components/Login';
@@ -9,17 +9,17 @@ import { Provider } from 'react-redux';
 import { isAuthenticated } from './api/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route
-      {...rest}
-      render={props =>
-        isAuthenticated() ? (
-          <Component {...props} />
-        ) : (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated() ? (
+        <Component {...props} />
+      ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
-      }
-    />
-  );
+    }
+  />
+);
 
 const Routes = () => (
     <Provider store={store} >

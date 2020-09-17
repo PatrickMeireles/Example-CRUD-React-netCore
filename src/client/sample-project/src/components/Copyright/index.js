@@ -3,17 +3,17 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
 function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <Link color="inherit" href="https://github.com/PatrickMeireles" target="_blank">
-          PatrickMeireles
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://github.com/PatrickMeireles" target="_blank">
+        PatrickMeireles
         </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
 
-    );
-  }
+  );
+}
 
-  export default Copyright;
+export default Copyright;
