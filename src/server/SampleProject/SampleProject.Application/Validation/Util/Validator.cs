@@ -5,15 +5,28 @@ using System.Text;
 
 namespace SampleProject.Application.Validation.Util
 {
+    public class FieldValidator
+    {
+        public string field { get; set; }
+
+        public string error { get; set; }
+
+        public FieldValidator(string _field, string _error)
+        {
+            this.field = _field;
+            this.error = _error;
+        }
+    }
+
     public class Validator
     {
-        public Dictionary<string, string> fieldErrors { get; set; }
+        public IEnumerable<FieldValidator> fieldErrors { get; set; }
 
-        public List<String> errors { get; set; }
+        public IEnumerable<String> errors { get; set; }
 
         public Validator()
         {
-            this.fieldErrors = new Dictionary<string, string>();
+            this.fieldErrors = new List<FieldValidator>();
             this.errors = new List<string>();
         }
 
@@ -23,9 +36,11 @@ namespace SampleProject.Application.Validation.Util
             {
                 var erros = results.Errors;
 
-                fieldErrors = erros.Where(x => x.PropertyName != "" && x.PropertyName != null).ToDictionary(x => x.PropertyName, x => x.ErrorMessage);
-                                   
+                fieldErrors = erros.Where(x => x.PropertyName != "" && x.PropertyName != null)
+                                   .Select(x => new FieldValidator(x.PropertyName, x.ErrorMessage));
 
+                errors = erros.Where(x => x.PropertyName == "" || x.PropertyName == null)
+                              .Select(x => x.ErrorMessage);
             }
         }
     }

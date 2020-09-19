@@ -161,4 +161,4 @@ const mapActionToProps = {
   Authenticate: LoginAction.Authenticate
 }
 
-export default connect(mapStateToProps, mapActionToProps)(showLogin);
+export default withRouter(connect(mapStateToProps, mapActionToProps)(Login));
