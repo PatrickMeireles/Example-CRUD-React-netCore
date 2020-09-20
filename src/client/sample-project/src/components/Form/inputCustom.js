@@ -16,9 +16,25 @@ import { login } from '../../api/auth';
 import { Link as LinkDom } from 'react-router-dom';
 import Registrar from '../Registrar';
 import Copyright from '../Copyright';
+import React from 'react';
 
-const inputCustom = (props) => {
+const InputCustom = (props) => {
 
+    return (
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            autoFocus= {props.autoFocus}
+            name={props.name}
+            label={props.label}
+            type={props.type ? props.type : 'text'}
+            id={props.id}
+            onChange={props.handleInputChange}
+            error= {props.error}
+            helperText= {props.helperText}
+        />)
 }
 
-export default inputCustom;
+export default InputCustom;

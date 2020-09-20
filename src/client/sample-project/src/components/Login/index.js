@@ -1,44 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import swal from 'sweetalert';
 import useForm from '../Form/useForm.js';
 import * as LoginAction from '../../actions/loginActions';
-import { Link as LinkDom, withRouter } from 'react-router-dom';
-import Registrar from '../Registrar';
+import { Link as LinkDom, withRouter, useHistory } from 'react-router-dom';
 import Copyright from '../Copyright';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import validaForm from './validate';
+import InputCustom from '../Form/inputCustom';
+import useStyles from './styles';
+
 
 const initialFields = {
   Login: '',
@@ -46,19 +24,15 @@ const initialFields = {
 }
 
 const Login = ({ ...props }) => {
+
+  let history = useHistory();
+
   const classes = useStyles();
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
 
-    const campoObrigatorio = 'Este campo é obrigatório';
-
-    if ('Login' in fieldValues)
-      temp.Login = fieldValues.Login ? '' : campoObrigatorio;
-
-    if ('Senha' in fieldValues)
-      temp.Senha = fieldValues.Senha ? '' : campoObrigatorio;
-
+    temp = validaForm(fieldValues, values);
     setErrors({ ...temp });
 
     if (fieldValues == values)
@@ -82,7 +56,12 @@ const Login = ({ ...props }) => {
     var returnValidate = validate();
 
     if (returnValidate) {
-      props.Authenticate(values);
+
+      const onSuccess = () => {
+        history.push('/home');
+      }
+
+      props.Authenticate(values, onSuccess);
     }
   }
 
@@ -97,32 +76,25 @@ const Login = ({ ...props }) => {
           Acessar
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
+
+          <InputCustom
             id="Login"
             label="Usuário"
             name="Login"
-            autoComplete="email"
             autoFocus
-            onChange={handleInputChange}
+            handleInputChange={handleInputChange}
             {...(errors.Login && { error: true, helperText: errors.Login })}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
+
+          <InputCustom
             name="Senha"
             label="Senha"
             type="password"
             id="Senha"
-            autoComplete="current-password"
-            onChange={handleInputChange}
+            handleInputChange={handleInputChange}
             {...(errors.Senha && { error: true, helperText: errors.Senha })}
           />
+
           <Button
             type="submit"
             fullWidth

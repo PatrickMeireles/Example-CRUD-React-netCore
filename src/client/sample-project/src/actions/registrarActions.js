@@ -14,6 +14,7 @@ export const Create = (data, onSuccess) => dispatch => {
                         payload: response.data
                     });
                     dispatch(Success('Boas Notícias!', 'Cadastro realizado com sucesso.'));
+                    onSuccess();
                 })
                 .catch(error => dispatch(Error('Ocorreu um erro!', '',error.response.data)));
 }

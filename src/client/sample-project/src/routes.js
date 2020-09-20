@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { history } from './helpers';
-import { BrowserRouter as Router, Route, Switch, Redirect, matchPath } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect, matchPath, useHistory } from 'react-router-dom';
 import Login from './components/Login';
 import Registrar from './components/Registrar';
 import Home from './components/Home';
@@ -23,7 +23,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const Routes = () => (
     <Provider store={store} >
-        <Router history={history} >
+        <Router history={useHistory} >
             <Switch>
                 <Route exact path="/" component={Login} />
                 <Route path="/Registrar" component={Registrar} />

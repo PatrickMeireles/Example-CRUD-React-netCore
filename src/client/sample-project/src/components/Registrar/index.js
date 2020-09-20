@@ -13,35 +13,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as LinkDom, withRouter } from 'react-router-dom';
+import { Link as LinkDom, withRouter, useHistory } from 'react-router-dom';
 import Copyright from '../Copyright';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useForm from '../Form/useForm.js';
 import * as CidadeActions from '../../actions/cidadeActions';
 import * as RegistrarActions from '../../actions/registrarActions';
-import swal from 'sweetalert';
-import { history } from '../../helpers';
 import validaForm from './validate';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import InputCustom from '../Form/inputCustom';
+import useStyles from './styles';
+
 
 const initialFields = {
   Nome: '',
@@ -52,6 +34,8 @@ const initialFields = {
 };
 
 const Registrar = ({ ...props }) => {
+
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -122,33 +106,14 @@ const Registrar = ({ ...props }) => {
 
     var returnValidate = validate();
 
-     if(returnValidate){
+    if (returnValidate) {
 
       const onSuccess = () => {
-
         history.push('/');
-
-        swal({
-          title: "Boas Notícias!",
-          text: 'Cadastro registrado com sucesso',
-          icon: "success",
-        })
       }
 
-      const onError = (response) => {
-        if(response.erros){
-            var mensagem = response.erros[0].error;
-            swal({
-              title: "Ocorreu um erro!",
-              text: mensagem,
-              icon: "error",
-            })
-        }
-      }
-
-      props.registrar(values);
-
-     }
+      props.registrar(values, onSuccess);
+    }
   }
 
   return (
@@ -164,27 +129,22 @@ const Registrar = ({ ...props }) => {
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                name="Nome"
-                variant="outlined"
-                required
-                fullWidth
+              <InputCustom
                 id="Nome"
                 label="Nome"
+                name="Nome"
                 autoFocus
-                onChange={handleInputChange}
+                handleInputChange={handleInputChange}
                 {...(errors.Nome && { error: true, helperText: errors.Nome })}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <InputCustom
                 id="Email"
                 label="Email"
                 name="Email"
-                onChange={handleInputChange}
+                autoFocus
+                handleInputChange={handleInputChange}
                 {...(errors.Email && { error: true, helperText: errors.Email })}
               />
             </Grid>
@@ -219,7 +179,7 @@ const Registrar = ({ ...props }) => {
                           {loading ? <CircularProgress color="inherit" size={20} /> : null}
                           {params.InputProps.endAdornment}
                         </React.Fragment>
-                        
+
                       ),
                     }}
                   />
@@ -227,30 +187,27 @@ const Registrar = ({ ...props }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="Senha"
-                label="Senha"
-                type="password"
+              <InputCustom
                 id="Senha"
-                onChange={handleInputChange}
+                label="Senha"
+                name="Senha"
+                type="password"
+                autoFocus
+                handleInputChange={handleInputChange}
                 {...(errors.Senha && { error: true, helperText: errors.Senha })}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="ConfirmarSenha"
-                label="Confirma Senha"
-                type="password"
+              <InputCustom
                 id="ConfirmarSenha"
-                onChange={handleInputChange}
+                label="Confirma Senha"
+                name="ConfirmarSenha"
+                type="password"
+                autoFocus
+                handleInputChange={handleInputChange}
                 {...(errors.ConfirmarSenha && { error: true, helperText: errors.ConfirmarSenha })}
               />
+
             </Grid>
           </Grid>
           <Button
